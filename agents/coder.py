@@ -1,34 +1,57 @@
 from .base_agent import BaseAgent
-import re
 
 class Coder(BaseAgent):
+    def __init__(self, model_name="deepseek-coder-v2", num_predict=4096, num_ctx=16384, base_url=None):
+        super().__init__(model_name=model_name, num_predict=num_predict, num_ctx=num_ctx, base_url=base_url, temperature=0.1)
+    
     def generate(self, prompt_context):
-        full_prompt = f"""VAI TRÒ: Bạn là một Chuyên gia Lập trình Python CẤP CAO.
-Bạn vừa bị Trọng tài (Reviewer) phê bình nghiêm khắc. 
+        full_prompt = f"""ROLE: Python Programming Expert (Senior Software Engineer).
+TASK: Fix logic errors or implement algorithms based on requirements.
 
-### [1. DỮ LIỆU ĐỐI CHIẾU & BẢNG KIỂM TOÁN]
+### [1. PROBLEM CONTEXT]:
 {prompt_context}
 
-### [2. CHỈ THỊ CƯỠNG BÁCH]
-1. ĐỐI CHIẾU BẢNG: Nếu trong [1] có 'BẢNG KIỂM TOÁN', hãy nhìn vào cột 'Kết luận' để thấy bước nào bạn làm 'Sai'.
-2. TRÍCH XUẤT LỆNH: Tìm 'CHỈ THỊ' của Trọng tài. Đây là mệnh lệnh phải tuân thủ 100%.
-3. TƯ DUY LẠI: Nếu mã nguồn cũ lặp lại lỗi cũ, bạn sẽ bị đào thải. Hãy thử một cách tiếp cận khác (ví dụ: dùng 2 vòng lặp thay vì 1, hoặc dùng `dict.get()`).
+### [2. EXECUTION PROCESS]:
+1. ANALYSIS: If there is an 'Audit Table' (LOGIC AUDIT TABLE), read it carefully to understand which rule is being violated.
+2. IMPLEMENTATION: Write complete Python code. Ensure the function name matches the requirement.
+3. OPTIMIZATION: Ensure the algorithm is correct for all edge cases.
 
-### [3. ĐỊNH DẠNG ĐẦU RA]
-Trả về mã nguồn trong block ```python ... ```.
-Comment 2 dòng đầu bắt buộc:
-Tuyệt đối không sử dụng hàm input(). Dữ liệu đầu vào phải được nhận thông qua tham số của hàm.
-# Sửa lỗi: [Tóm tắt ngắn gọn lỗi logic/thực thi đã xảy ra]
-# Giải pháp: [Mô tả ngắn gọn thuật toán/cấu trúc mới để khắc phục]
+### [3. STRICT OUTPUT REQUIREMENTS]:
+- ONLY return source code inside a ```python ... ``` block.
+- CRITICAL: You MUST write the complete function body (implementation logic, loops/mappings, and return statement) inside the function! NEVER stop inside the docstring or leave the function body empty!
+- ABSOLUTELY DO NOT include unrelated libraries, network code (socket), or system code unless requested.
+- Do not provide lengthy explanations outside the code block.
+- Follow name of the function strictly.
+- Include a test example at the end of the file.
 """
-        response = self.llm.invoke(full_prompt)
-        code = self.extract_code(response)
-        return code.strip()
+        response = ""
+        for chunk in self.llm.stream(full_prompt):
+            response += chunk
+            if len(response.split("```")) >= 3:
+                break
+                
+        return self.extract_code(response).strip()
 
-    def extract_code(self, text):
-        """Trích xuất code từ Markdown linh hoạt hơn."""
-        match = re.search(r"```python\s*(.*?)\s*```", text, re.DOTALL)
-        if match:
-            return match.group(1)
-        # Fallback nếu model quên bọc tag
-        return text.strip()
+    def generate_with_logprob(self, prompt_context: str) -> tuple:
+        full_prompt = f"""ROLE: Python Programming Expert (Senior Software Engineer).
+TASK: Fix logic errors or implement algorithms based on requirements.
+
+### [1. PROBLEM CONTEXT]:
+{prompt_context}
+
+### [2. EXECUTION PROCESS]:
+1. ANALYSIS: If there is an 'Audit Table' (LOGIC AUDIT TABLE), read it carefully to understand which rule is being violated.
+2. IMPLEMENTATION: Write complete Python code. Ensure the function name matches the requirement.
+3. OPTIMIZATION: Ensure the algorithm is correct for all edge cases.
+
+### [3. STRICT OUTPUT REQUIREMENTS]:
+- ONLY return source code inside a ```python ... ``` block.
+- CRITICAL: You MUST write the complete function body (implementation logic, loops/mappings, and return statement) inside the function! NEVER stop inside the docstring or leave the function body empty!
+- ABSOLUTELY DO NOT include unrelated libraries, network code (socket), or system code unless requested.
+- Do not provide lengthy explanations.
+- Follow name of the function strictly.
+- Include a test example at the end of the file.
+"""
+        raw_text, mean_logprob = super().generate_with_logprob(full_prompt)
+        code = self.extract_code(raw_text).strip()
+        return code, mean_logprob
