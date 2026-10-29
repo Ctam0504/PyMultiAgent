@@ -47,7 +47,7 @@ PyMultiAgent/
 
 ## 📁 Pipeline of the system:
 
-![Pipeline](images\pipeline.png)
+![Pipeline](images/pipeline.png)
  
 ⚙️ Installation
 Clone the repository:
