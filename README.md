@@ -5,7 +5,7 @@
   <a href="#framework-architecture">Architecture</a> •
   <a href="#repository-structure">Structure</a> •
   <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
+  <a href="#usage">Usage</a>
 </p>
 
 ---
@@ -45,6 +45,10 @@ PyMultiAgent/
 ├── requirements.txt        # Required Python dependencies
 └── README.md
 
+## 📁 Pipeline of the system:
+
+![Pipeline](images/pipeline.png)
+ 
 ⚙️ Installation
 Clone the repository:
 
