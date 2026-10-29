@@ -8,6 +8,7 @@
   <a href="#usage">Usage</a>
 </p>
 
+
 ---
 
 ## 📖 Overview
@@ -44,10 +45,10 @@ PyMultiAgent/
 ├── main.py                 # Main CLI entry point
 ├── requirements.txt        # Required Python dependencies
 └── README.md
-
+```
 ## 📁 Pipeline of the system:
 
-![Pipeline](images/pipeline.png "My Project Logo")
+![Pipeline](images/pipeline.png "Pipeline of project")
  
 ⚙️ Installation
 Clone the repository:
