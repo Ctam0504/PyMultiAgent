@@ -33,7 +33,8 @@ The framework consists of distinct specialized roles collaborating through an it
 ```text
 PyMultiAgent/
 ├── Agents/                 # Core agent modules
-│   ├── machinelearning/    # Classifier training & prediction scripts
+│   ├── machinelearning/
+|   |   └── classifier.py    # Classifier training & prediction scripts
 │   ├── base_agent.py       # Base agent class for initialization and modification
 │   ├── coder.py            # Code generation agent
 │   ├── tester_.py          # Test generation agent
