@@ -46,10 +46,27 @@ PyMultiAgent/
 ├── requirements.txt        # Required Python dependencies
 └── README.md
 ```
+---
 ## 📁 Pipeline of the system:
 
 ![Pipeline](images/pipeline.png "Pipeline of project")
  
+---
+### Result in 2 benchmark:
+### 1. Benchmark Evaluation (MBPP)
+
+| Metric | Coder | Coder + Tester | Coder + Tester + Reviewer | Coder + Tester + Reviewer + Classifier |
+| :--- | :---: | :---: | :---: | :---: |
+| **Độ chính xác (Pass@3)** | 98.70% ± 0.26% | 95.41% ± 0.43% | **98.84% ± 0.33%** | 98.56% ± 0.17% |
+| **Thời gian thực thi (s)** | 7,292.98 | 41,464.02 | 28,429.89 | 28,571.63 |
+
+### 2. Benchmark Evaluation (HumanEval)
+
+| Metric | Coder | Coder + Tester | Coder + Tester + Reviewer | Coder + Tester + Reviewer + Classifier |
+| :--- | :---: | :---: | :---: | :---: |
+| **Độ chính xác** | 75.41% ± 0.35% | 80.08% ± 3% | **84.55% ± 0.93%** | 80.89% ± 2% |
+| **Thời gian thực thi (s)** | 2,847.37 | 17,815.46 | 5,007.51 | **2,233.21** |
+---
 ⚙️ Installation
 Clone the repository:
 
