@@ -6,7 +6,6 @@
   <a href="#repository-structure">Structure</a> •
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a> •
-  <a href="#license">License</a>
 </p>
 
 ---
