@@ -47,7 +47,9 @@ PyMultiAgent/
 
 ## 📁 Pipeline of the system:
 
-![Pipeline](https://raw.githubusercontent.com/Ctam0504/PyMultiAgent/main/images/pipeline.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Ctam0504/PyMultiAgent/main/images/pipeline.png" alt="Pipeline" width="600px">
+</p>
  
 ⚙️ Installation
 Clone the repository:
